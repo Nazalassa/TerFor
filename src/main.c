@@ -27,7 +27,7 @@ struct content{
 
 
 struct post{
-	
+	struct content *content;
 	struct post *previous;
 	struct post *next;
 }
