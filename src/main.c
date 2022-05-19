@@ -34,9 +34,9 @@ struct post{
 
 int main(int argc, char *argv[]){
 	printf("TerFor  Copyright (C) 2022  Nazalassa");
-    printf("This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.");
-    printf("This is free software, and you are welcome to redistribute it");
-    printf("under certain conditions; type `show c' for details.");
+	printf("This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.");
+	printf("This is free software, and you are welcome to redistribute it");
+	printf("under certain conditions; type `show c' for details.");
 	
 	return(0);
 }
