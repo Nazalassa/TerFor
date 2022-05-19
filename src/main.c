@@ -25,12 +25,14 @@ struct content{
 	char *content;
 }
 
-
 struct post{
 	struct content *content;
 	struct post *previous;
 	struct post *next;
 }
+
+typedef struct content content;
+typedef struct post post;
 
 int main(int argc, char *argv[]){
 	printf("TerFor  Copyright (C) 2022  Nazalassa");
