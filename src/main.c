@@ -37,7 +37,7 @@ typedef struct post post;
 int main(int argc, char *argv[]){
 	FILE *launch = fopen("Data/launch.ascii", "r");
 	int c;
-	if(file){
+	if(launch){
 		while((c = getc(file)) != EOF)
 			printf("%s", chr);
 		fclose(launch);
