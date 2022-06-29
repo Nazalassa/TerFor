@@ -20,6 +20,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 // --------------------------------------- HEADERS ------------------------------------------
 
 #include <ncurses.h>
+#include <locale.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -47,6 +48,8 @@ typedef struct metathread MTHREAD;
 void displayPosts(MTHREAD*, WINDOW*);
 
 void addPost(MTHREAD*, char*, char*);
+
+void displayFile(WINDOW*, char*);
 
 // ---------------------------------- FUNCTION DEFINITIONS ----------------------------------
 
@@ -79,6 +82,23 @@ void addPost(MTHREAD *mainThread, char *post, char *author){
   mainThread->len++;
 }
 
+void displayFile(WINDOW *win, char *file){
+  FILE *f = fopen(file, "rb");
+  if(f){
+    fseek(f, 0, SEEK_END);
+    long pos = ftell(f);
+    fseek(f, 0, SEEK_SET);
+    char *f_array = malloc(pos);
+    fread(f_array, pos, 1, f);
+    fclose(f);
+    waddstr(win, f_array);
+    free(f_array);
+    wrefresh(win);
+    wgetch(win);
+  }
+}
+
+
 char *usrs[10] = {"Jebediah", "Valentina", "Jebediah", "KSC", "Jebediah", "KSC", "Valentina", "Jebediah", "KSC", "Valentina"};
 char *psts[10] = {"So we're getting near Duna.", "Yup! I can't wait until the landing! When is the maneuver?", "Uh, I don't really know. KSC, when is the maneuver?", "Well, in a few hours.", "Only? I thought we'd have more time.", "Well, we can't really delay a Periapsis Burn, you know.", "Anyway, the guys down on the surface surely wait us. That'll be cruel to make them wait!", "Sure! How long will it take until we're on the ground of Duna?", "Maybe seven hours, not more.", "Yay! Thanks, KSC. I'm waiting for the burn."};
 
@@ -86,6 +106,7 @@ char *psts[10] = {"So we're getting near Duna.", "Yup! I can't wait until the la
 // --------------------------------------- MAIN ---------------------------------------------
 
 int main(int argc, char **argv){
+  setlocale(LC_ALL, "");
   initscr();
   raw();
   noecho();
@@ -102,7 +123,12 @@ int main(int argc, char **argv){
   input = newwin(postWriteY, termX, numPosts + 1, 0), postArea = newwin(numPosts, termX, 0, 0), separator = newwin(1, termX, numPosts, 0);
   wmove(separator, 0, 0);
   for(int i = 0; i < termX; i++) waddch(separator, '=');
+  startwin = newwin(24, 80, termY / 2 - 12, termX / 2 - 40);
   // END OF WINDOW INITIALIZATION
+  // ...
+  // STARTUP
+  displayFile(startwin, "Data/launch.ascii");
+  // END OF STARTUP
   // ...
   wrefresh(separator);
   MTHREAD *mainThread;
